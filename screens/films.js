@@ -14,18 +14,19 @@ function Films() {
   let [films, setfilms] = useState([]); //guardan los estados de los Films de la API en tiempo de ejecucion.
   let filmv = []; //se utiliza para guardar toda la información proveniente de la API
   let [character, setcharacter] = useState([]); //guarda los estados de los nombres de los personajes
-  const [modalVisible, setModalVisible] = useState(false); //guarda el estado de los modales para mostrar información de cada Film
-
+  let [modalVisible, setModalVisible] = useState(false); //guarda el estado de los modales para mostrar información de cada Film
+  const [info, setinfo] = useState([]);
   useEffect(() => {
     axios //peticion a la API para obtener las peliculas
       .get("https://swapi.dev/api/films")
       .then((response) => {
         response.data["results"].forEach((film) => {
-          optainCharacters(film.characters[0]); //not working
+          optainCharacters(film.characters[0]); //nworking Bad
           filmv.push({
             id: film.episode_id,
             title: film.title,
             character: character, //film.characters[0], //se pasa la ruta por el momento
+            description: film.opening_crawl,
           });
         });
         setfilms(filmv);
@@ -33,7 +34,7 @@ function Films() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   let optainCharacters = (route) => {
     //recive una ruta acerca de un personaje y devuelve su informacion
@@ -47,6 +48,11 @@ function Films() {
       });
   };
 
+  let showModal = (film) => {
+    setModalVisible(!modalVisible);
+    setinfo(film);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>FILMS</Text>
@@ -55,36 +61,37 @@ function Films() {
           <ListItem
             key={film.id}
             style={{ backgroundColor: "#f2efe2" }}
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => showModal(film)}
           >
             <ListItem.Content>
               <ListItem.Title>{film.title}</ListItem.Title>
               <ListItem.Subtitle>{film.character}</ListItem.Subtitle>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  Alert.alert("Modal has been closed.");
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>{film.title}</Text>
-                    <Pressable
-                      style={[styles.button, styles.buttonClose]}
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>Hide Modal</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </Modal>
             </ListItem.Content>
           </ListItem>
         );
       })}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>{info.title}</Text>
+            <Text style={styles.modalText}>{info.description}</Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
