@@ -3,6 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/homeScreen";
 import Films from "./screens/films";
+import Starships from "./screens/starships";
+import Vehicles from "./screens/vehicles";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +21,16 @@ function App() {
           options={{ headerShown: false }}
           name="Films"
           component={Films}
+        />
+        <Tab.Screen
+          options={{ headerShown: false }}
+          name="StarShips"
+          component={Starships}
+        />
+        <Tab.Screen
+          options={{ headerShown: false }}
+          name="Vehicles"
+          component={Vehicles}
         />
       </Tab.Navigator>
     </NavigationContainer>

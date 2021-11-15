@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import title from "../assets/starWars.png";
 
 function HomeScreen() {
@@ -12,6 +12,9 @@ function HomeScreen() {
         <Text style={styles.PresentationText}>
           welcome to the most satisfalling experience in the startWars Universe
         </Text>
+      </View>
+      <View>
+        <Text style={styles.SecondText}>may the force be with you!</Text>
       </View>
     </View>
   );
@@ -31,6 +34,12 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     color: "#000000",
     fontSize: 22,
+    textAlign: "center",
+  },
+  SecondText: {
+    paddingTop: 280,
+    paddingVertical: 30,
+    fontSize: 16,
     textAlign: "center",
   },
 });

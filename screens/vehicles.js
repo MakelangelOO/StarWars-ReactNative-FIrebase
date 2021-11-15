@@ -1,10 +1,12 @@
 import React from "react";
-import { VIew, Text } from "react-native";
+import { View, Text } from "react-native";
 
 function Vehicles() {
-  <View>
-    <Text>Vehicle</Text>
-  </View>;
+  return (
+    <View>
+      <Text>Vehicle</Text>
+    </View>
+  );
 }
 
 export default Vehicles;
