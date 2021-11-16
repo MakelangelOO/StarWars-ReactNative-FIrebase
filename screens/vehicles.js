@@ -9,19 +9,23 @@ import {
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const FAVORITE_VEHICLE = "@fvkey";
 
 function Vehicles() {
   const [modalVisible, setModalVisible] = useState(false);
   const [info, setinfo] = useState([]);
   let [veh, setveh] = useState([]);
   let vehicles = [];
+  let favorites = [];
   useEffect(() => {
     axios //peticion a la API para obtener las naves estelares
       .get("https://swapi.dev/api/vehicles")
       .then((response) => {
         response.data["results"].forEach((vehicle) => {
           vehicles.push({
-            id: vehicle.created,
+            id: vehicle.url,
             name: vehicle.name,
             model: vehicle.model,
             cost: vehicle.cost_in_credits,
@@ -41,6 +45,17 @@ function Vehicles() {
     setinfo(vehicle);
   };
 
+  const saveFavorite = async (value) => {
+    try {
+      favorites.push(value);
+      let jsonValue = JSON.stringify(favorites);
+      await AsyncStorage.setItem(FAVORITE_VEHICLE, jsonValue);
+      alert("añadido a vehicles favoritos.");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>VEHICLES</Text>
@@ -50,6 +65,7 @@ function Vehicles() {
             key={veh.id}
             style={{ backgroundColor: "#f2efe2" }}
             onPress={() => showModal(vehicle)}
+            onLongPress={() => saveFavorite(vehicle)}
           >
             <ListItem.Content>
               <ListItem.Title>{vehicle.name}</ListItem.Title>

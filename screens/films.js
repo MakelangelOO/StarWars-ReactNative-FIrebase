@@ -9,13 +9,17 @@ import {
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const FAVORITE_FILM = "@ffkey";
 
 function Films() {
   let [films, setfilms] = useState([]); //guardan los estados de los Films de la API en tiempo de ejecucion.
   let filmv = []; //se utiliza para guardar toda la información proveniente de la API
   let [character, setcharacter] = useState([]); //guarda los estados de los nombres de los personajes
   let [modalVisible, setModalVisible] = useState(false); //guarda el estado de los modales para mostrar información de cada Film
-  const [info, setinfo] = useState([]);
+  let [info, setinfo] = useState([]);
+  let favorites = [];
   useEffect(() => {
     axios //peticion a la API para obtener las peliculas
       .get("https://swapi.dev/api/films")
@@ -36,7 +40,7 @@ function Films() {
       });
   }, []);
 
-  let optainCharacters = (route) => {
+  const optainCharacters = (route) => {
     //recive una ruta acerca de un personaje y devuelve su informacion
     axios
       .get(route)
@@ -48,9 +52,21 @@ function Films() {
       });
   };
 
-  let showModal = (film) => {
+  const showModal = (film) => {
     setModalVisible(!modalVisible);
     setinfo(film);
+  };
+
+  const saveFavorite = async (value) => {
+    try {
+      favorites.push(value);
+      let jsonValue = JSON.stringify(favorites);
+      await AsyncStorage.setItem(FAVORITE_FILM, jsonValue);
+      alert("añadido a films favoritos.");
+      favorites = [];
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -62,6 +78,7 @@ function Films() {
             key={film.id}
             style={{ backgroundColor: "#f2efe2" }}
             onPress={() => showModal(film)}
+            onLongPress={() => saveFavorite(film)}
           >
             <ListItem.Content>
               <ListItem.Title>{film.title}</ListItem.Title>

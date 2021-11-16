@@ -9,19 +9,24 @@ import {
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const FAVORITE_STARSHIP = "@fskey";
 
 function Starships() {
   const [modalVisible, setModalVisible] = useState(false);
   const [info, setinfo] = useState([]);
   let [star, setstar] = useState([]);
   let starships = [];
+  let favorites = [];
+
   useEffect(() => {
     axios //peticion a la API para obtener las naves estelares
       .get("https://swapi.dev/api/starships")
       .then((response) => {
         response.data["results"].forEach((star) => {
           starships.push({
-            id: star.created,
+            id: star.url,
             name: star.name,
             model: star.model,
             cost: star.cost_in_credits,
@@ -41,6 +46,17 @@ function Starships() {
     setinfo(starship);
   };
 
+  const saveFavorite = async (value) => {
+    try {
+      favorites.push(value);
+      let jsonValue = JSON.stringify(favorites);
+      await AsyncStorage.setItem(FAVORITE_STARSHIP, jsonValue);
+      alert("añadido a starships favoritos.");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>STAR SHIPS</Text>
@@ -50,6 +66,7 @@ function Starships() {
             key={starship.id}
             style={{ backgroundColor: "#f2efe2" }}
             onPress={() => showModal(starship)}
+            onLongPress={() => saveFavorite(starship)}
           >
             <ListItem.Content>
               <ListItem.Title>{starship.name}</ListItem.Title>
