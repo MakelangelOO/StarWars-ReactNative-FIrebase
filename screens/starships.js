@@ -21,7 +21,7 @@ function Starships() {
   let favorites = [];
 
   useEffect(() => {
-    axios //peticion a la API para obtener las naves estelares
+    axios
       .get("https://swapi.dev/api/starships")
       .then((response) => {
         response.data["results"].forEach((star) => {
@@ -67,8 +67,10 @@ function Starships() {
             style={{ backgroundColor: "#f2efe2" }}
             onPress={() => showModal(starship)}
             onLongPress={() => saveFavorite(starship)}
+            theme={{ colors: "#f2efe2" }}
+            bottomDivider
           >
-            <ListItem.Content>
+            <ListItem.Content style={styles.list}>
               <ListItem.Title>{starship.name}</ListItem.Title>
               <ListItem.Subtitle>{starship.model}</ListItem.Subtitle>
             </ListItem.Content>
@@ -160,6 +162,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  list: {
+    alignItems: "center",
   },
 });
 

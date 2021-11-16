@@ -19,8 +19,9 @@ function Vehicles() {
   let [veh, setveh] = useState([]);
   let vehicles = [];
   let favorites = [];
+
   useEffect(() => {
-    axios //peticion a la API para obtener las naves estelares
+    axios
       .get("https://swapi.dev/api/vehicles")
       .then((response) => {
         response.data["results"].forEach((vehicle) => {
@@ -66,8 +67,10 @@ function Vehicles() {
             style={{ backgroundColor: "#f2efe2" }}
             onPress={() => showModal(vehicle)}
             onLongPress={() => saveFavorite(vehicle)}
+            theme={{ colors: "#f2efe2" }}
+            bottomDivider
           >
-            <ListItem.Content>
+            <ListItem.Content style={styles.list}>
               <ListItem.Title>{vehicle.name}</ListItem.Title>
               <ListItem.Subtitle>{vehicle.model}</ListItem.Subtitle>
             </ListItem.Content>
@@ -159,6 +162,9 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  list: {
+    alignItems: "center",
   },
 });
 export default Vehicles;

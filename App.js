@@ -9,7 +9,7 @@ import HomeScreen from "./screens/homeScreen";
 import Films from "./screens/films";
 import Starships from "./screens/starships";
 import Vehicles from "./screens/vehicles";
-
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 const Tab = createBottomTabNavigator();
 
 Notifications.setNotificationHandler({
@@ -72,22 +72,50 @@ function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
           name="Home"
           component={HomeScreen}
         />
         <Tab.Screen
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="film" color={color} size={size} />
+            ),
+          }}
           name="Films"
           component={Films}
         />
         <Tab.Screen
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="airplane"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
           name="StarShips"
           component={Starships}
         />
         <Tab.Screen
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="car-sports"
+                color={color}
+                size={size}
+              />
+            ),
+          }}
           name="Vehicles"
           component={Vehicles}
         />
